@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ============================================================================
+   Nightshift — design tokens
+   Palette "Nightshift" · technical · minimal · premium
+
+   Every foreground/background pair below was verified numerically against the
+   WCAG 2.1 contrast formula (OKLCH -> linear sRGB -> relative luminance):
+   body text >= 4.5:1, icons/rings >= 3:1, borders >= 1.5:1, in BOTH modes.
+   Every value is inside the sRGB gamut, so nothing is silently clamped.
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  --background: oklch(0.985 0.003 275);
+  --foreground: oklch(0.2 0.015 275);
+  --card: oklch(1 0 275);
+  --card-foreground: oklch(0.2 0.015 275);
+  --popover: oklch(1 0 275);
+  --popover-foreground: oklch(0.2 0.015 275);
+  --primary: oklch(0.52 0.21 288);
+  --primary-foreground: oklch(0.99 0 288);
+  --secondary: oklch(0.955 0.006 275);
+  --secondary-foreground: oklch(0.2 0.015 275);
+  --muted: oklch(0.955 0.006 275);
+  --muted-foreground: oklch(0.5 0.015 275);
+  --accent: oklch(0.94 0.02 286);
+  --accent-foreground: oklch(0.2 0.015 275);
+  --destructive: oklch(0.55 0.21 25);
+  --destructive-foreground: oklch(0.99 0 25);
+  --border: oklch(0.84 0.006 275);
+  --input: oklch(0.965 0.005 275);
+  --ring: oklch(0.52 0.21 288);
+
+  --status-open: oklch(0.52 0.13 255);
+  --status-progress: oklch(0.55 0.13 78);
+  --status-review: oklch(0.52 0.16 320);
+  --status-done: oklch(0.52 0.13 158);
+
+  --radius: 0.625rem;
+}
+
+[data-theme="dark"] {
+  --background: oklch(0.145 0.014 275);
+  --foreground: oklch(0.965 0.004 275);
+  --card: oklch(0.198 0.016 275);
+  --card-foreground: oklch(0.965 0.004 275);
+  --popover: oklch(0.223 0.017 275);
+  --popover-foreground: oklch(0.965 0.004 275);
+  --primary: oklch(0.72 0.15 288);
+  --primary-foreground: oklch(0.15 0.03 288);
+  --secondary: oklch(0.24 0.024 275);
+  --secondary-foreground: oklch(0.965 0.004 275);
+  --muted: oklch(0.22 0.016 275);
+  --muted-foreground: oklch(0.68 0.014 275);
+  --accent: oklch(0.265 0.032 286);
+  --accent-foreground: oklch(0.965 0.004 275);
+  --destructive: oklch(0.7 0.17 25);
+  --destructive-foreground: oklch(0.16 0.03 25);
+  --border: oklch(0.32 0.018 275);
+  --input: oklch(0.198 0.016 275);
+  --ring: oklch(0.72 0.15 288);
+
+  --status-open: oklch(0.78 0.09 255);
+  --status-progress: oklch(0.82 0.14 78);
+  --status-review: oklch(0.79 0.13 320);
+  --status-done: oklch(0.8 0.15 158);
+
+  --radius: 0.625rem;
+}
+
+/* Map tokens to utilities. `inline` keeps var() live so [data-theme] swaps. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-status-open: var(--status-open);
+  --color-status-progress: var(--status-progress);
+  --color-status-review: var(--status-review);
+  --color-status-done: var(--status-done);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One focus treatment everywhere. Never `outline-none` without a replacement. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 30%, transparent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion. Fixed duration tiers (100ms feedback / 150ms small enter /
+   200ms overlay) and every rule names its properties — never `all`.
+   ------------------------------------------------------------------------- */
+@keyframes ns-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ns-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@layer utilities {
+  /*
+   * Entrance animation for overlays only (menus, toasts) — never for list
+   * items. `animation-fill-mode: both` leaves `transform: translateY(0)`
+   * applied after the animation ends, and any non-`none` transform creates a
+   * stacking context on that element. On a card, that traps the status menu's
+   * z-index inside the card, so later sibling cards paint over the open menu.
+   * It also re-fires on every revalidation, which the craft guidance warns
+   * against for lists.
+   */
+  .animate-rise {
+    animation: ns-rise 180ms cubic-bezier(0, 0, 0.2, 1) both;
+  }
+
+  /* Content-shaped skeletons, not a spinner. */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--muted);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--foreground) 6%, transparent),
+      transparent
+    );
+    animation: ns-shimmer 1.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-rise,
+    .skeleton::after {
+      animation: none !important;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
