@@ -112,9 +112,13 @@ type TaskRow = {
   status: string;
   created_by: string | null;
   author_name: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: string | Date;
+  updated_at: string | Date;
 };
+
+function toIsoTimestamp(value: string | Date): string {
+  return value instanceof Date ? value.toISOString() : value;
+}
 
 function toTask(row: TaskRow): Task {
   return {
@@ -123,8 +127,8 @@ function toTask(row: TaskRow): Task {
     status: isStatus(row.status) ? row.status : "open",
     createdBy: row.created_by,
     authorName: row.author_name,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: toIsoTimestamp(row.created_at),
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 

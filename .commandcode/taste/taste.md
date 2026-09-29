@@ -1,0 +1,5 @@
+- Prefers inspecting the existing code and tracing the full data flow before making changes rather than blindly applying a proposed patch. Confidence: 0.95
+- Prefers fixing underlying type mismatches at system/data-access boundaries instead of scattering defensive workarounds through the UI. Confidence: 0.95
+- Prefers the smallest correct, focused change with no unrelated refactors or UI changes, while preserving existing behavior and abstractions. Confidence: 0.95
+- Values strong TypeScript contracts and does not want types weakened merely to suppress an error. Confidence: 0.95
+- Expects relevant typecheck, tests, build, and lint validation after code changes, followed by a concise summary of root cause, changed files, exact fix, and command results. Confidence: 0.95
